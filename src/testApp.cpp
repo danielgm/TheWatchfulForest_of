@@ -10,13 +10,15 @@ void testApp::setup() {
 	kinect.init();
 	kinect.open();
 	
-	minAreaRadius = 2;
+	minAreaRadius = 1;
 	maxAreaRadius = 10;
 	
-	contourFinder.setTargetColor(ofColor(16, 161, 16), TRACK_COLOR_RGB);
+	contourFinder.setTargetColor(ofColor(64, 153, 33), TRACK_COLOR_RGB);
 	contourFinder.setMinAreaRadius(minAreaRadius);
 	contourFinder.setMaxAreaRadius(maxAreaRadius);
 	contourFinder.setThreshold(50);
+	
+	contourFoundTime = ofGetSystemTime();
 	
 	ofSetFrameRate(60);
 	
@@ -32,7 +34,6 @@ void testApp::setup() {
 	okSound.loadSound("ok.wav");
 	
 	calibrationStep = -1;
-	isCalibrated = false;
 	
 	pointFont.loadFont("arial.ttf", 12);
 	
@@ -59,15 +60,18 @@ void testApp::update() {
 				if (contourFinder.size() > 0 && contourFinder.getContourArea(0) > 0) {
 					pScreen = toOf(contourFinder.getCentroid(0));
 					pWorld = kinect.getWorldCoordinateAt(pScreen.x, pScreen.y);
-					ofVec3f translated = pWorld - cameraPosition;
-					ofVec3f rotated = translated.getRotatedRad(0, -atan2(cameraDirection.x, cameraDirection.z), 0);
-					pCamera = rotated;
-						
-					int pan = 90 + atan2(pCamera.x, pCamera.z) * 180/PI;
-					int tilt = 90 - atan2(pCamera.y, pCamera.z) * 180/PI;
 					
-					panAndTiltTo(pan, tilt);
-					contourFoundTime = now;
+					if (pWorld.x != 0 || pWorld.y != 0 || pWorld.z != 0) {
+						ofVec3f translated = pWorld - cameraPosition;
+						ofVec3f rotated = translated.getRotatedRad(0, -atan2(cameraDirection.x, cameraDirection.z), 0);
+						pCamera = rotated;
+						
+						int pan = 90 + atan2(pCamera.x, pCamera.z) * 180/PI;
+						int tilt = 90 + atan2(pCamera.y, pCamera.z) * 180/PI;
+						
+						panAndTiltTo(pan, tilt);
+						contourFoundTime = now;
+					}
 				}
 			}
 		}
@@ -83,11 +87,11 @@ void testApp::update() {
 						pCamera = rotated;
 						
 						cout << "pWorld: " << pWorld << endl;
-						cout << "translted: " << translated << endl;
+						cout << "translated: " << translated << endl;
 						cout << "pCamera: " << pCamera << endl;
 						
 						int pan = 90 + atan2(pCamera.x, pCamera.z) * 180/PI;
-						int tilt = 90 - atan2(pCamera.y, pCamera.z) * 180/PI;
+						int tilt = 90 + atan2(pCamera.y, pCamera.z) * 180/PI;
 						
 						panAndTiltTo(pan, tilt);
 					}
@@ -107,16 +111,16 @@ void testApp::update() {
 void testApp::draw() {
 	ofSetColor(255, 255, 255);
 	
+	long now = ofGetSystemTime();
 	if (drawImage.isAllocated()) {
 		if (isDrawingMask) {
-			kinect.drawDepth(kinect.width, 0);
+			kinect.drawDepth(0, 0);
 		}
 		else {
 			drawImage.draw(0, 0);
 		}
 		contourFinder.draw();
 		
-		long now = ofGetSystemTime();
 		if (now < contourFoundTime + 5000) {
 			ofSetColor(255, 0, 0);
 			ofNoFill();
@@ -135,7 +139,11 @@ void testApp::draw() {
 	<< "camera position: (" << cameraPosition << ")" << endl
 	<< "camera direction: (" << cameraDirection << ")" << endl << endl
 	<< "target color: " << targetColor << endl
-	<< "fps: " << ofGetFrameRate() << endl;
+	<< "fps: " << ofGetFrameRate() << endl
+	<< endl
+	<< "real-time tracking: " << (realTimeTracking ? "on" : "off") << endl
+	<< "calibrated: " << (isCalibrated ? "yes" : "no") << endl
+	<< "contour found: " << (now - contourFoundTime) << " seconds ago" << endl;
 	ofDrawBitmapString(reportStream.str(), 20, 500);
 	
 	if (isRecording) {
@@ -153,15 +161,20 @@ void testApp::exit() {
 
 void testApp::keyPressed (int key) {
 	switch (key) {
-		case 't':
+		case 'l':
 			setLaser(!isLaserOn);
 			break;
-		
+			
+		case 't':
+			isDrawingMask = !isDrawingMask;
+			break;
+			
 		case 'c':
 			panAndTiltTo(90, 90);
 			setLaser(true);
 			calibrationStep = 0;
 			isCalibrated = false;
+			contourFoundTime = ofGetSystemTime();
 			
 			cout << "Calibration: started." << endl;
 			break;
@@ -173,12 +186,12 @@ void testApp::keyPressed (int key) {
 		case 's':
 			saveCalibration();
 			break;
-		
+			
 		case 'r':
 			realTimeTracking = !realTimeTracking;
 			cout << "Real-time tracking: " << (realTimeTracking ? "on" : "off") << endl;
 			break;
-		
+			
 		case 'm':
 			isRecording = !isRecording;
 			if (isRecording) {
@@ -291,7 +304,7 @@ bool testApp::getMidpointBetweenLines(ofVec3f p0, ofVec3f v0, ofVec3f p1, ofVec3
 		// Time parameters values for the closest points on each line.
 		float sc = (b * e - c * d) / denom;
 		float tc = (a * e - b * d) / denom;
-	
+		
 		// Closest points on each line.
 		ofVec3f c0 = p0 + sc * v0;
 		ofVec3f c1 = p1 + tc * v1;
@@ -312,6 +325,7 @@ bool testApp::loadCalibration() {
 		return false;
 	}
 	else {
+		cout << "Calibration format okay." << endl;
 		cameraPosition = ofVec3f(ofToFloat(parts[0]), ofToFloat(parts[1]), ofToFloat(parts[2]));
 		cameraDirection = ofVec3f(ofToFloat(parts[3]), ofToFloat(parts[4]), ofToFloat(parts[5]));
 		return true;
@@ -333,6 +347,7 @@ int testApp::handleCalibrationStep(int step) {
 			calibrationLine0.p.y = pWorld.y;
 			calibrationLine0.p.z = pWorld.z;
 			
+			cout << pWorld.x << ',' << pWorld.y << ',' << pWorld.z << endl;
 			cout << "Calibration: got first point. Searching for second point." << endl;
 			return step + 1;
 			
@@ -342,8 +357,9 @@ int testApp::handleCalibrationStep(int step) {
 			calibrationLine0.v.z = calibrationLine0.p.z - pWorld.z;
 			
 			// Move to next line.
-			panAndTiltTo(90, 120);
+			panAndTiltTo(90, 60);
 			
+			cout << pWorld.x << ',' << pWorld.y << ',' << pWorld.z << endl;
 			cout << "Calibration: got first line. Searching for point on second line." << endl;
 			return step + 1;
 			
@@ -352,6 +368,7 @@ int testApp::handleCalibrationStep(int step) {
 			calibrationLine1.p.y = pWorld.y;
 			calibrationLine1.p.z = pWorld.z;
 			
+			cout << pWorld.x << ',' << pWorld.y << ',' << pWorld.z << endl;
 			cout << "Calibration: got first point. Searching for second point (line 2)." << endl;
 			return step + 1;
 			
@@ -360,6 +377,7 @@ int testApp::handleCalibrationStep(int step) {
 			calibrationLine1.v.y = calibrationLine1.p.y - pWorld.y;
 			calibrationLine1.v.z = calibrationLine1.p.z - pWorld.z;
 			
+			cout << pWorld.x << ',' << pWorld.y << ',' << pWorld.z << endl;
 			if (getMidpointBetweenLines(calibrationLine0.p, calibrationLine0.v, calibrationLine1.p, calibrationLine1.v, cameraPosition)) {
 				
 				cout << "Calibration finished. Camera at: (" << cameraPosition << ")" << endl;
@@ -382,7 +400,7 @@ int testApp::handleCalibrationStep(int step) {
 				isCalibrated = false;
 				return 0;
 			}
-		
+			
 		default:
 			return -1;
 	}
