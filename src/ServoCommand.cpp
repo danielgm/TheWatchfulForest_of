@@ -1,18 +1,18 @@
 #include "ServoCommand.h"
 
-ofSerial ServoCommand::getSerial() {
+ofSerial* ServoCommand::getSerial() {
   return serial;
 }
 
-void ServoCommand::setSerial(ofSerial v) {
-  serial = v;
+void ServoCommand::setSerial(ofSerial &v) {
+  serial = &v;
 }
 
 void ServoCommand::setServo(int servo, int value) {
   sendInt(servo);
-  serial.writeByte(':');
+  serial->writeByte(':');
   sendInt(value);
-  serial.writeByte(';');
+  serial->writeByte(';');
 }
 
 void ServoCommand::setAnalog(int pin, int v) {
@@ -32,7 +32,7 @@ void ServoCommand::setDigital(int pin, bool v) {
 
 void ServoCommand::sendString(string v) {
   for (int i = 0; i < v.length(); i++) {
-    serial.writeByte(v[i]);
+    serial->writeByte(v[i]);
   }
 }
 

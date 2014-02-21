@@ -5,8 +5,8 @@
 class ServoCommand {
   public:
 
-    ofSerial getSerial();
-    void setSerial(ofSerial v);
+    ofSerial* getSerial();
+    void setSerial(ofSerial &v);
 
     void setServo(int servo, int value);
     void setAnalog(int pin, int v);
@@ -17,5 +17,5 @@ class ServoCommand {
     void sendString(string v);
     void sendInt(int v);
 
-    ofSerial serial;
+    ofSerial* serial;
 };

@@ -9,6 +9,7 @@
 #include "ServoCommand.h"
 
 class TwfApp : public ofBaseApp {
+
 public:
 
   void setup();
@@ -23,7 +24,10 @@ public:
   void mouseReleased(int x, int y, int button);
   void windowResized(int w, int h);
 
+private:
+
   ofSerial serial;
+  ServoCommand servoCommand;
 
   ofTrueTypeFont pointFont;
 };

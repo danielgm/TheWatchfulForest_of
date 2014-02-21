@@ -11,10 +11,15 @@ void TwfApp::setup() {
   serial.listDevices();
   serial.setup(0, 9600);
 
+  servoCommand.setSerial(serial);
+
   pointFont.loadFont("arial.ttf", 12);
 }
 
 void TwfApp::update() {
+  while (serial.available()) {
+    cout << serial.readByte();
+  }
 }
 
 void TwfApp::draw() {
@@ -29,7 +34,18 @@ void TwfApp::draw() {
 void TwfApp::exit() {
 }
 
-void TwfApp::keyPressed (int key) {
+void TwfApp::keyPressed(int key) {
+  switch (key) {
+    case '1':
+      servoCommand.setServo(0, 200);
+      break;
+    case '2':
+      servoCommand.setServo(0, 400);
+      break;
+    case '3':
+      servoCommand.setServo(0, 600);
+      break;
+  }
 }
 
 void TwfApp::mouseMoved(int x, int y) {
