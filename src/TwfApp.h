@@ -28,6 +28,7 @@ private:
 
   ofSerial serial;
   ServoCommand servoCommand;
+  Camera cam;
 
   ofTrueTypeFont pointFont;
 };

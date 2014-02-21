@@ -13,12 +13,18 @@ void TwfApp::setup() {
 
   servoCommand.setSerial(serial);
 
+  cam.setup(0, servoCommand);
+  cam.setPanRange(200, 700);
+  cam.setTiltRange(200, 700);
+  cam.setPanAndTiltHome();
+
   pointFont.loadFont("arial.ttf", 12);
 }
 
 void TwfApp::update() {
+  cam.update();
   while (serial.available()) {
-    cout << serial.readByte();
+    cout << (char)serial.readByte();
   }
 }
 
@@ -36,14 +42,18 @@ void TwfApp::exit() {
 
 void TwfApp::keyPressed(int key) {
   switch (key) {
+    case '0':
+      cam.panAndTiltTo(450, 450);
+      break;
+
     case '1':
-      servoCommand.setServo(0, 200);
+      cam.panAndTiltTo(300, 500);
       break;
     case '2':
-      servoCommand.setServo(0, 400);
+      cam.panAndTiltTo(400, 300);
       break;
     case '3':
-      servoCommand.setServo(0, 600);
+      cam.panAndTiltTo(700, 400);
       break;
   }
 }

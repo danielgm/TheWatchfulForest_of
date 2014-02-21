@@ -1,17 +1,25 @@
 #pragma once
 
 #include "ofMain.h"
+#include "ServoCommand.h"
 
 class Camera {
 
   public:
 
     Camera();
-    Camera(int id, int panMin, int panMax, int tiltMin, int tiltMax);
+    void setup(int id, ServoCommand &servoCommand);
+    void update();
+
     int getId();
+
+    void setPanRange(int min, int max);
+    void setTiltRange(int min, int max);
+
     int getPan();
     int getTilt();
     void setPanAndTilt(int pan, int tilt);
+    void setPanAndTiltHome();
     void panAndTiltTo(int pan, int tilt);
     void panAndTiltTo(int pan, int tilt, int duration);
     bool isAnimating();
@@ -32,6 +40,8 @@ class Camera {
     float easeOut(float t, float b, float c, float d);
     float easeInOut(float t, float b, float c, float d);
 
+    ServoCommand* servoCommand;
+
     int id;
 
     float panMin;
@@ -45,8 +55,9 @@ class Camera {
     float tiltStart;
     float tiltTarget;
 
-    long animationStart;
+    long long int animationStart;
     int animationDuration;
+    bool oneLastFrame;
 
     bool isLaserOn;
 
