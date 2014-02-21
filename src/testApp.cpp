@@ -69,7 +69,7 @@ void testApp::update() {
 						int pan = 90 + atan2(pCamera.x, pCamera.z) * 180/PI;
 						int tilt = 90 + atan2(pCamera.y, pCamera.z) * 180/PI;
 						
-						panAndTiltTo(pan, tilt);
+						setPanAndTilt(pan, tilt);
 						contourFoundTime = now;
 					}
 				}
@@ -93,7 +93,7 @@ void testApp::update() {
 						int pan = 90 + atan2(pCamera.x, pCamera.z) * 180/PI;
 						int tilt = 90 + atan2(pCamera.y, pCamera.z) * 180/PI;
 						
-						panAndTiltTo(pan, tilt);
+						setPanAndTilt(pan, tilt);
 					}
 					else {
 						calibrationStep = handleCalibrationStep(calibrationStep);
@@ -170,7 +170,7 @@ void testApp::keyPressed (int key) {
 			break;
 			
 		case 'c':
-			panAndTiltTo(90, 90);
+			setPanAndTilt(90, 90);
 			setLaser(true);
 			calibrationStep = 0;
 			isCalibrated = false;
@@ -240,41 +240,37 @@ void testApp::mouseReleased(int x, int y, int button) {
 void testApp::windowResized(int w, int h) {
 }
 
-/**
- * Sends a command to the arduino controlling the servos.
- * Commands:
- *  p: pan
- *  t: tilt
- *  a: laser on
- *  b: laser off
- *
- * @param r Numeric parameter.
- * @param command The command to send.
- */
-void testApp::servoCommand(char command) {
-	serial.writeByte(command);
-	cout << command << endl;
-}
-void testApp::servoCommand(int r, char command) {
-	if (r >= 0) {
-		string s = ofToString(r);
-		for (int i = 0; i < s.length(); i++) {
-			serial.writeByte(s[i]);
-			cout << s[i];
-		}
-	}
-	serial.writeByte(command);
-	cout << command << endl;
+void testApp::setPanAndTilt(int pan, int tilt) {
+	setServo(0, ofClamp(ofMap(pan, 0, 180, 170, 670), 170, 670));
+	setServo(1, ofClamp(ofMap(tilt, 60, 120, 250, 490), 250, 490));
 }
 
-void testApp::panAndTiltTo(int pan, int tilt) {
-	servoCommand(pan, 'p');
-	servoCommand(tilt, 't');
+void testApp::writeString(string v) {
+	for (int i = 0; i < v.length(); i++) {
+		serial.writeByte(v[i]);
+	}
+}
+
+void testApp::writeInt(int v) {
+	writeString(ofToString(v));
+}
+
+void testApp::setServo(int servo, int value) {
+	writeInt(servo);
+	serial.writeByte(':');
+	writeInt(value);
+	serial.writeByte(';');
 }
 
 void testApp::setLaser(bool on) {
 	isLaserOn = on;
-	servoCommand(on ? 'a' : 'b');
+	
+	if (isLaserOn) {
+		writeString("p4:1;");
+	}
+	else {
+		writeString("p4:0;");
+	}
 }
 
 /**
@@ -357,7 +353,7 @@ int testApp::handleCalibrationStep(int step) {
 			calibrationLine0.v.z = calibrationLine0.p.z - pWorld.z;
 			
 			// Move to next line.
-			panAndTiltTo(90, 60);
+			setPanAndTilt(90, 75);
 			
 			cout << pWorld.x << ',' << pWorld.y << ',' << pWorld.z << endl;
 			cout << "Calibration: got first line. Searching for point on second line." << endl;

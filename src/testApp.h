@@ -25,9 +25,10 @@ public:
 	void mouseReleased(int x, int y, int button);
 	void windowResized(int w, int h);
 	
-	void servoCommand(char command);
-	void servoCommand(int r, char command);
-	void panAndTiltTo(int pan, int tilt);
+	void writeString(string v);
+	void writeInt(int v);
+	void setPanAndTilt(int pan, int tilt);
+	void setServo(int servo, int value);
 	void setLaser(bool on);
 	
 	bool getMidpointBetweenLines(ofVec3f p0, ofVec3f v0, ofVec3f p1, ofVec3f v1, ofVec3f& result);
