@@ -13,8 +13,8 @@ class Camera {
 
     int getId();
 
-    void setPanRange(int min, int max);
-    void setTiltRange(int min, int max);
+    void setPanExtent(int min, int max);
+    void setTiltExtent(int min, int max);
 
     int getPan();
     int getTilt();

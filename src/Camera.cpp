@@ -40,12 +40,12 @@ void Camera::update() {
   }
 }
 
-void Camera::setPanRange(int min, int max) {
+void Camera::setPanExtent(int min, int max) {
   panMin = min;
   panMax = max;
 }
 
-void Camera::setTiltRange(int min, int max) {
+void Camera::setTiltExtent(int min, int max) {
   tiltMin = min;
   tiltMax = max;
 }
