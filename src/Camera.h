@@ -16,14 +16,14 @@ class Camera {
     void setPanExtent(int min, int max);
     void setTiltExtent(int min, int max);
 
-    int getPan();
-    void setPan(int pan);
-    int getTilt();
-    void setTilt(int tilt);
-    void setPanAndTilt(int pan, int tilt);
+    float getPan();
+    void setPan(float pan);
+    float getTilt();
+    void setTilt(float tilt);
+    void setPanAndTilt(float pan, float tilt);
     void setPanAndTiltHome();
-    void panAndTiltTo(int pan, int tilt);
-    void panAndTiltTo(int pan, int tilt, int duration);
+    void panAndTiltTo(float pan, float tilt);
+    void panAndTiltTo(float pan, float tilt, int duration);
     bool isAnimating();
 
     bool getLaser();
