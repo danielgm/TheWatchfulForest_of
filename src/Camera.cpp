@@ -34,7 +34,6 @@ void Camera::setup(int _id, ServoCommand &_servoCommand) {
 
 void Camera::update() {
   if (isAnimating()) {
-    cout << ofGetSystemTime() - animationStart << " " << panStart << " " << panTarget << " " << getPan() << endl;
     servoCommand->setServo(0, getPan());
     servoCommand->setServo(1, getTilt());
   }
@@ -64,8 +63,6 @@ int Camera::getPan() {
 }
 
 void Camera::setPan(int pan) {
-  cout << "isAnimating()" << isAnimating() << endl;
-  cout << "getTilt()" << getTilt() << endl;
   setPanAndTilt(pan, getTilt());
 }
 
@@ -115,9 +112,6 @@ void Camera::panAndTiltTo(int pan, int tilt, int duration) {
   animationStart = ofGetSystemTime();
   animationDuration = duration;
   oneLastFrame = true;
-
-  cout << "panStart = " << panStart << ", panTarget = " << panTarget << endl;
-  cout << "tiltStart = " << tiltStart << ", tiltTarget = " << tiltTarget << endl;
 }
 
 bool Camera::isAnimating() {
