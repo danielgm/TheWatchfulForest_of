@@ -37,6 +37,22 @@ void KinectMarkerTracker::update() {
   }
 }
 
+void KinectMarkerTracker::setMinAreaRadius(int n) {
+  contourFinder.setMinAreaRadius(n);
+}
+
+void KinectMarkerTracker::setMaxAreaRadius(int n) {
+  contourFinder.setMaxAreaRadius(n);
+}
+
+void KinectMarkerTracker::setTargetColor(ofColor c) {
+  contourFinder.setTargetColor(c, ofxCv::TRACK_COLOR_RGB);
+}
+
+void KinectMarkerTracker::setThreshold(int n) {
+  contourFinder.setThreshold(n);
+}
+
 bool KinectMarkerTracker::hasResult() {
   return _hasResult;
 }
