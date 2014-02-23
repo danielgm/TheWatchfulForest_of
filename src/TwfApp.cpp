@@ -30,6 +30,17 @@ void TwfApp::update() {
         ofClamp((float)mouseX / ofGetWindowWidth(), 0, 1),
         ofClamp((float)mouseY / ofGetWindowHeight(), 0, 1));
   }
+
+  if (cameraCalibration.isRunning()) {
+    kinect.update();
+    if (kinect.isFrameNew()) {
+      kinectMarkerTracker.update();
+      if (kinectMarkerTracker.hasResult()) {
+        ofVec3f p = kinectMarkerTracker.getResult();
+        cameraCalibration.recordPoint(p);
+      }
+    }
+  }
   //cam.update();
 
   while (serial.available()) {
@@ -59,7 +70,6 @@ void TwfApp::exit() {
 }
 
 void TwfApp::keyPressed(int key) {
-  cameraCalibration.recordPoint(ofVec3f(1, 2, 3));
 }
 
 void TwfApp::mouseMoved(int x, int y) {

@@ -12,6 +12,7 @@
 		032E6D6018B7265B007C670B /* TwfApp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 032E6D5E18B7265B007C670B /* TwfApp.cpp */; };
 		033405D118B95C770047C450 /* ExtentCalibration.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 033405CF18B95C770047C450 /* ExtentCalibration.cpp */; };
 		033405D518B9E66F0047C450 /* CameraCalibration.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 033405D318B9E66F0047C450 /* CameraCalibration.cpp */; };
+		033405D818B9F12A0047C450 /* KinectMarkerTracker.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 033405D618B9F12A0047C450 /* KinectMarkerTracker.cpp */; };
 		10B69DE456AED1288FC9316B /* Tracker.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A810DF70319A10353588F5DB /* Tracker.cpp */; };
 		169D3C72FDE6C5590A1616F5 /* ofxCvFloatImage.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7B6A03390302D5A2C9F0E4AB /* ofxCvFloatImage.cpp */; };
 		1D5F3298C2FA073628012944 /* ofxCvContourFinder.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C76DE5C29BDBD2CAA1DD0021 /* ofxCvContourFinder.cpp */; };
@@ -103,6 +104,8 @@
 		033405D018B95C770047C450 /* ExtentCalibration.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ExtentCalibration.h; sourceTree = "<group>"; };
 		033405D318B9E66F0047C450 /* CameraCalibration.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CameraCalibration.cpp; sourceTree = "<group>"; };
 		033405D418B9E66F0047C450 /* CameraCalibration.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CameraCalibration.h; sourceTree = "<group>"; };
+		033405D618B9F12A0047C450 /* KinectMarkerTracker.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = KinectMarkerTracker.cpp; sourceTree = "<group>"; };
+		033405D718B9F12A0047C450 /* KinectMarkerTracker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KinectMarkerTracker.h; sourceTree = "<group>"; };
 		03A75A648BC4CF1D9DEDD0CE /* Flow.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = Flow.cpp; path = ../../../addons/ofxCv/libs/ofxCv/src/Flow.cpp; sourceTree = SOURCE_ROOT; };
 		057122A817D12571F8C0C7A4 /* ofxCvGrayscaleImage.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = ofxCvGrayscaleImage.cpp; path = ../../../addons/ofxOpenCv/src/ofxCvGrayscaleImage.cpp; sourceTree = SOURCE_ROOT; };
 		087522EA37A32B8D902CAB64 /* core_c.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = core_c.h; path = ../../../addons/ofxOpenCv/libs/opencv/include/opencv2/core/core_c.h; sourceTree = SOURCE_ROOT; };
@@ -774,6 +777,8 @@
 		E4B69E1C0A3A1BDC003C02F2 /* src */ = {
 			isa = PBXGroup;
 			children = (
+				033405D618B9F12A0047C450 /* KinectMarkerTracker.cpp */,
+				033405D718B9F12A0047C450 /* KinectMarkerTracker.h */,
 				033405D318B9E66F0047C450 /* CameraCalibration.cpp */,
 				033405D418B9E66F0047C450 /* CameraCalibration.h */,
 				033405CF18B95C770047C450 /* ExtentCalibration.cpp */,
@@ -975,6 +980,7 @@
 				032E6D6018B7265B007C670B /* TwfApp.cpp in Sources */,
 				033405D118B95C770047C450 /* ExtentCalibration.cpp in Sources */,
 				033405D518B9E66F0047C450 /* CameraCalibration.cpp in Sources */,
+				033405D818B9F12A0047C450 /* KinectMarkerTracker.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

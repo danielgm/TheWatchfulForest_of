@@ -8,6 +8,7 @@
 #include "Camera.h"
 #include "ExtentCalibration.h"
 #include "CameraCalibration.h"
+#include "KinectMarkerTracker.h"
 #include "ServoCommand.h"
 
 class TwfApp : public ofBaseApp {
@@ -33,6 +34,8 @@ private:
   Camera cam;
   ExtentCalibration extentCalibration;
   CameraCalibration cameraCalibration;
+  ofxKinect kinect;
+  KinectMarkerTracker kinectMarkerTracker;
 
   ofTrueTypeFont pointFont;
 };
