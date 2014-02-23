@@ -20,7 +20,8 @@ void TwfApp::setup() {
 
   pointFont.loadFont("arial.ttf", 12);
 
-  extentCalibration.start(cam);
+  //extentCalibration.start(cam);
+  cameraCalibration.start(cam);
 }
 
 void TwfApp::update() {
@@ -43,6 +44,11 @@ void TwfApp::draw() {
     ofDrawBitmapString(extentCalibration.getMessage(), 20, 500);
   }
 
+  if (cameraCalibration.isRunning()
+      || cameraCalibration.isComplete()) {
+    ofDrawBitmapString(cameraCalibration.getMessage(), 20, 500);
+  }
+
   ofSetColor(255, 255, 255);
   stringstream reportStream;
   reportStream << "";
@@ -53,21 +59,7 @@ void TwfApp::exit() {
 }
 
 void TwfApp::keyPressed(int key) {
-  switch (key) {
-    case '0':
-      cam.panAndTiltTo(450, 450);
-      break;
-
-    case '1':
-      cam.panAndTiltTo(300, 500);
-      break;
-    case '2':
-      cam.panAndTiltTo(400, 300);
-      break;
-    case '3':
-      cam.panAndTiltTo(700, 400);
-      break;
-  }
+  cameraCalibration.recordPoint(ofVec3f(1, 2, 3));
 }
 
 void TwfApp::mouseMoved(int x, int y) {
