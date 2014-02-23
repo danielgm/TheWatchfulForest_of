@@ -11,9 +11,7 @@ void ExtentCalibration::start(Camera &_camera) {
 }
 
 void ExtentCalibration::update(float x, float y) {
-  camera->setPanAndTilt(
-      ofMap(x, 0, 1, BASE_EXTENT_MIN, BASE_EXTENT_MAX),
-      ofMap(y, 0, 1, BASE_EXTENT_MIN, BASE_EXTENT_MAX));
+  camera->setPanAndTilt(x, y);
 }
 
 void ExtentCalibration::recordPoint(float x, float y) {
@@ -67,6 +65,8 @@ void ExtentCalibration::setStep(int s) {
       break;
 
     case STEP_PAN_LEFT:
+      camera->setPanExtent(BASE_EXTENT_MIN, BASE_EXTENT_MAX);
+      camera->setTiltExtent(BASE_EXTENT_MIN, BASE_EXTENT_MAX);
       message = "Pan left.";
       break;
 
