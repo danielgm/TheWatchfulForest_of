@@ -7,9 +7,8 @@ class Camera {
 
   public:
 
-    Camera();
-    void setup(int id, ServoCommand &servoCommand);
-    void update();
+    Camera(int id, ServoCommand &servoCommand);
+    virtual void update();
 
     int getId();
 
@@ -57,7 +56,7 @@ class Camera {
     float tiltStart;
     float tiltTarget;
 
-    long long int animationStart;
+    unsigned long long animationStart;
     int animationDuration;
     bool oneLastFrame;
 

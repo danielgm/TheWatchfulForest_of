@@ -1,15 +1,16 @@
 #pragma once
 
 #include "ofMain.h"
-#include "ofxOpenCv.h"
 #include "ofxKinect.h"
-#include "ofxCv.h"
 
 #include "Camera.h"
-#include "ExtentCalibration.h"
 #include "CameraCalibration.h"
+#include "ExtentCalibration.h"
 #include "KinectMarkerTracker.h"
+#include "RandomMovementCamera.h"
 #include "ServoCommand.h"
+
+using namespace std;
 
 class TwfApp : public ofBaseApp {
 
@@ -31,7 +32,7 @@ private:
 
   ofSerial serial;
   ServoCommand servoCommand;
-  Camera cam;
+  vector<Camera*> cameras;
   ExtentCalibration extentCalibration;
   CameraCalibration cameraCalibration;
   ofxKinect kinect;

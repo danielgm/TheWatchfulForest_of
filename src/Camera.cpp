@@ -1,7 +1,9 @@
 #include "Camera.h"
 
-Camera::Camera() {
-  id = -1;
+Camera::Camera(int _id, ServoCommand &_servoCommand) {
+  id = _id;
+  servoCommand = &_servoCommand;
+
   panMin = 0;
   panMax = 0;
   tiltMin = 0;
@@ -27,15 +29,11 @@ int Camera::getId() {
   return id;
 }
 
-void Camera::setup(int _id, ServoCommand &_servoCommand) {
-  id = _id;
-  servoCommand = &_servoCommand;
-}
-
 void Camera::update() {
   if (isAnimating()) {
-    servoCommand->setServo(0, ofMap(getPan(), 0, 1, panMin, panMax));
-    servoCommand->setServo(1, ofMap(getTilt(), 0, 1, tiltMin, tiltMax));
+    cout << "\t" << id << "\t" << floor(getPan() * 100) << ", " << floor(getTilt() * 100) << endl;
+    servoCommand->setServo(id * 2 + 0, ofMap(getPan(), 0, 1, panMin, panMax));
+    servoCommand->setServo(id * 2 + 1, ofMap(getTilt(), 0, 1, tiltMin, tiltMax));
   }
 }
 
@@ -84,7 +82,7 @@ void Camera::setTilt(float tilt) {
 }
 
 void Camera::setPanAndTilt(float pan, float tilt) {
-  cout << "Camera::setPanAndTilt(" << pan << ", " << tilt << ")" << endl;
+  cout << "Camera(" << id << ")" << "::setPanAndTilt(" << pan << ", " << tilt << ")" << endl;
   panStart = panTarget = pan;
   tiltStart = tiltTarget = tilt;
 
@@ -102,7 +100,7 @@ void Camera::setPanAndTiltHome() {
 }
 
 void Camera::panAndTiltTo(float pan, float tilt, int duration) {
-  cout << "panAndTiltTo(" << pan << ", " << tilt << ", " << duration << ")" << endl;
+  cout << "Camera(" << id << ")" << "::panAndTiltTo(" << pan << ", " << tilt << ", " << duration << ")" << endl;
   panStart = getPan();
   tiltStart = getTilt();
 

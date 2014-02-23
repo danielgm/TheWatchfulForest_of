@@ -13,15 +13,24 @@ void TwfApp::setup() {
 
   servoCommand.setSerial(serial);
 
-  cam.setup(0, servoCommand);
-  cam.setPanExtent(200, 700);
-  cam.setTiltExtent(200, 700);
-  cam.setPanAndTiltHome();
+  Camera* cam;
+
+  cam = new RandomMovementCamera(42, servoCommand);
+  cam->setPanExtent(200, 700);
+  cam->setTiltExtent(200, 700);
+  cam->setPanAndTiltHome();
+  cameras.push_back(cam);
+
+  cam = new RandomMovementCamera(0, servoCommand);
+  cam->setPanExtent(200, 700);
+  cam->setTiltExtent(200, 700);
+  cam->setPanAndTiltHome();
+  cameras.push_back(cam);
 
   pointFont.loadFont("arial.ttf", 12);
 
   //extentCalibration.start(cam);
-  cameraCalibration.start(cam);
+  //cameraCalibration.start(cam);
 }
 
 void TwfApp::update() {
@@ -41,7 +50,12 @@ void TwfApp::update() {
       }
     }
   }
-  //cam.update();
+
+  for (int i = 0; i < cameras.size(); i++) {
+    Camera* cam = cameras[i];
+    cam->update();
+    //cam.setTargets(targets);
+  }
 
   while (serial.available()) {
     cout << (char)serial.readByte();
