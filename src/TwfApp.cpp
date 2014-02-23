@@ -90,6 +90,13 @@ void TwfApp::mouseReleased(int x, int y, int button) {
   else if (extentCalibration.isComplete()) {
     extentCalibration.finish();
   }
+
+  // FIXME: Probably a better time to set the target color than while
+  // running the camera calibration that uses it. \-:
+  if (cameraCalibration.isRunning()) {
+    ofColor targetColor = kinect.getPixelsRef().getColor(x, y);
+    kinectMarkerTracker.setTargetColor(targetColor);
+  }
 }
 
 void TwfApp::windowResized(int w, int h) {
