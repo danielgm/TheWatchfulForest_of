@@ -14,15 +14,23 @@ void TwfApp::setup() {
   servoCommand.setSerial(serial);
 
   cam.setup(0, servoCommand);
-  cam.setPanRange(200, 700);
-  cam.setTiltRange(200, 700);
+  cam.setPanExtent(200, 700);
+  cam.setTiltExtent(200, 700);
   cam.setPanAndTiltHome();
 
   pointFont.loadFont("arial.ttf", 12);
+
+  extentCalibration.start(cam);
 }
 
 void TwfApp::update() {
-  cam.update();
+  if (extentCalibration.isRunning()) {
+    extentCalibration.update(
+        ofClamp((float)mouseX / ofGetWindowWidth(), 0, 1),
+        ofClamp((float)mouseY / ofGetWindowHeight(), 0, 1));
+  }
+  //cam.update();
+
   while (serial.available()) {
     cout << (char)serial.readByte();
   }
@@ -30,6 +38,10 @@ void TwfApp::update() {
 
 void TwfApp::draw() {
   ofBackground(100, 100, 100);
+
+  if (extentCalibration.isRunning() || extentCalibration.isComplete()) {
+    ofDrawBitmapString(extentCalibration.getMessage(), 20, 500);
+  }
 
   ofSetColor(255, 255, 255);
   stringstream reportStream;
@@ -68,6 +80,14 @@ void TwfApp::mousePressed(int x, int y, int button) {
 }
 
 void TwfApp::mouseReleased(int x, int y, int button) {
+  if (extentCalibration.isRunning()) {
+    extentCalibration.recordPoint(
+        ofClamp((float)x / ofGetWindowWidth(), 0, 1),
+        ofClamp((float)y / ofGetWindowHeight(), 0, 1));
+  }
+  else if (extentCalibration.isComplete()) {
+    extentCalibration.finish();
+  }
 }
 
 void TwfApp::windowResized(int w, int h) {

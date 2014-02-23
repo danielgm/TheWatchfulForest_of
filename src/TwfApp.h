@@ -6,6 +6,7 @@
 #include "ofxCv.h"
 
 #include "Camera.h"
+#include "ExtentCalibration.h"
 #include "ServoCommand.h"
 
 class TwfApp : public ofBaseApp {
@@ -29,6 +30,7 @@ private:
   ofSerial serial;
   ServoCommand servoCommand;
   Camera cam;
+  ExtentCalibration extentCalibration;
 
   ofTrueTypeFont pointFont;
 };

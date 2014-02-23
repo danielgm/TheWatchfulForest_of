@@ -17,7 +17,9 @@ class Camera {
     void setTiltExtent(int min, int max);
 
     int getPan();
+    void setPan(int pan);
     int getTilt();
+    void setTilt(int tilt);
     void setPanAndTilt(int pan, int tilt);
     void setPanAndTiltHome();
     void panAndTiltTo(int pan, int tilt);

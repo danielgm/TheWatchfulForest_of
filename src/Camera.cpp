@@ -1,4 +1,4 @@
-#include "camera.h"
+#include "Camera.h"
 
 Camera::Camera() {
   id = -1;
@@ -63,6 +63,12 @@ int Camera::getPan() {
   }
 }
 
+void Camera::setPan(int pan) {
+  cout << "isAnimating()" << isAnimating() << endl;
+  cout << "getTilt()" << getTilt() << endl;
+  setPanAndTilt(pan, getTilt());
+}
+
 int Camera::getTilt() {
   if (isAnimating()) {
     return floor(easeInOut(
@@ -76,13 +82,18 @@ int Camera::getTilt() {
   }
 }
 
+void Camera::setTilt(int tilt) {
+  setPanAndTilt(getPan(), tilt);
+}
+
 void Camera::setPanAndTilt(int pan, int tilt) {
+  cout << "Camera::setPanAndTilt(" << pan << ", " << tilt << ")" << endl;
   panStart = panTarget = pan;
   tiltStart = tiltTarget = tilt;
 
   animationStart = 0;
   animationDuration = 0;
-  oneLastFrame = true;
+  oneLastFrame = false;
 }
 
 void Camera::panAndTiltTo(int pan, int tilt) {
