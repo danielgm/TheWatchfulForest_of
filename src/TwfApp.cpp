@@ -13,20 +13,6 @@ void TwfApp::setup() {
 
   servoCommand.setSerial(serial);
 
-  Camera* cam;
-
-  cam = new RandomMovementCamera(42, servoCommand);
-  cam->setPanExtent(200, 700);
-  cam->setTiltExtent(200, 700);
-  cam->setPanAndTiltHome();
-  cameras.push_back(cam);
-
-  cam = new RandomMovementCamera(0, servoCommand);
-  cam->setPanExtent(200, 700);
-  cam->setTiltExtent(200, 700);
-  cam->setPanAndTiltHome();
-  cameras.push_back(cam);
-
   loadSettings();
 
   //extentCalibration.start(cam);
@@ -88,6 +74,45 @@ void TwfApp::exit() {
 void TwfApp::loadSettings() {
   settings.loadFile("settings.xml");
   pointFont.loadFont("arial.ttf", settings.getValue("settings:fontSize", 0));
+
+  settings.pushTag("settings");
+
+  for (int i = 0; i < cameras.size(); i++) {
+    delete cameras[i];
+  }
+  cameras.clear();
+
+  settings.pushTag("cameras");
+  int numCameras = settings.getNumTags("camera");
+  for (int i = 0; i < numCameras; i++) {
+    settings.pushTag("camera", i);
+
+    Camera* cam = new Camera(
+        settings.getValue("id", 0), servoCommand);
+    cam->setPanExtent(
+        settings.getValue("panMin", 0),
+        settings.getValue("panMax", 0));
+    cam->setTiltExtent(
+        settings.getValue("tiltMin", 0),
+        settings.getValue("tiltMax", 0));
+    cam->setPosition(ofVec3f(
+        settings.getValue("position:x", 0.0),
+        settings.getValue("position:y", 0.0),
+        settings.getValue("position:z", 0.0)));
+    cam->setDirection(ofVec3f(
+        settings.getValue("direction:x", 0.0),
+        settings.getValue("direction:y", 0.0),
+        settings.getValue("direction:z", 0.0)));
+
+    cameras.push_back(cam);
+
+    settings.popTag();
+  }
+
+  settings.popTag();
+  settings.popTag();
+
+  setMessage("Settings loaded.");
 }
 
 void TwfApp::saveSettings() {
@@ -103,6 +128,8 @@ void TwfApp::saveSettings() {
   settings.popTag();
 
   settings.saveFile("settings.xml");
+
+  setMessage("Settings saved.");
 }
 
 void TwfApp::keyPressed(int key) {
