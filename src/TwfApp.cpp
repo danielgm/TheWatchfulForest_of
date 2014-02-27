@@ -89,6 +89,16 @@ void TwfApp::loadSettings() {
 }
 
 void TwfApp::saveSettings() {
+  settings.pushTag("settings");
+  settings.clearTagContents("cameras");
+  settings.pushTag("cameras");
+
+  for (int i = 0; i < cameras.size(); i++) {
+    Camera* cam = cameras[i];
+    cam->pushSettings(settings, i);
+  }
+
+  settings.popTag();
 
   settings.saveFile("settings.xml");
 }

@@ -1,6 +1,8 @@
 #pragma once
 
 #include "ofMain.h"
+#include "ofxXmlSettings.h"
+
 #include "ServoCommand.h"
 
 class Camera {
@@ -32,6 +34,8 @@ class Camera {
     void setPosition(ofVec3f v);
     ofVec3f getDirection();
     void setDirection(ofVec3f v);
+
+    void pushSettings(ofxXmlSettings &settings, int index);
 
   private:
 
