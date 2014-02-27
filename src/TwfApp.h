@@ -34,13 +34,15 @@ public:
 
 private:
 
+  Camera* getCameraById(int id);
   void updateCameras();
   void startExtentCalibration(int id);
   void setMessage(string s);
   void shutdown();
 
   enum Constants {
-    INPUT_EXTENT_CALIBRATION = 0
+    INPUT_EXTENT_CALIBRATION = 0,
+    INPUT_PAUSE = 1
   };
 
   ofxXmlSettings settings;

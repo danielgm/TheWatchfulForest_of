@@ -77,7 +77,9 @@ class Camera {
 
     bool isLaserOn;
     bool isPaused;
-    bool isStopped;
+
+    int nullSignalDelay;
+    unsigned long long nullSignalTime;
 
     ofVec3f position;
     ofVec3f direction;

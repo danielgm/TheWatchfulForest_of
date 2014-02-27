@@ -31,16 +31,10 @@ void TwfApp::update() {
     if (cameras.size() <= 0) {
       ofExit();
     }
-
-	updateCameras();
-    return;
   }
-
-  if (extentCalibration.isRunning()) {
-    return;
+  else if (extentCalibration.isRunning()) {
   }
-
-  if (cameraCalibration.isRunning()) {
+  else if (cameraCalibration.isRunning()) {
     kinect.update();
     if (kinect.isFrameNew()) {
       kinectMarkerTracker.update();
@@ -49,7 +43,6 @@ void TwfApp::update() {
         cameraCalibration.recordPoint(p);
       }
     }
-    return;
   }
 
   updateCameras();
@@ -87,6 +80,8 @@ void TwfApp::exit() {
 }
 
 void TwfApp::loadSettings() {
+  stringstream ss;
+
   settings.loadFile("settings.xml");
   pointFont.loadFont("arial.ttf", settings.getValue("settings:fontSize", 0));
 
@@ -106,6 +101,7 @@ void TwfApp::loadSettings() {
         settings.getValue("id", 0), servoCommand);
     cam->readSettings(settings);
     cam->setPanAndTiltHome();
+    cam->setPaused(true);
 
     cameras.push_back(cam);
 
@@ -141,6 +137,10 @@ void TwfApp::saveSettings() {
 }
 
 void TwfApp::keyPressed(int key) {
+  int id;
+  Camera* cam;
+  stringstream ss;
+
   switch (key) {
     case 'x':
       shutdown();
@@ -159,10 +159,28 @@ void TwfApp::keyPressed(int key) {
       setMessage("Extents calibration: input a digit for the camera ID.");
       break;
 
+    case 'p':
+      inputState = INPUT_PAUSE;
+      setMessage("Pause: input a digit for the camera ID.");
+      break;
+
     case '0'...'9':
-      if (inputState == INPUT_EXTENT_CALIBRATION) {
-        int id = key - '0';
-        startExtentCalibration(id);
+      id = key - '0';
+      cam = getCameraById(id);
+
+      switch (inputState) {
+        case INPUT_EXTENT_CALIBRATION:
+          startExtentCalibration(id);
+          break;
+
+        case INPUT_PAUSE:
+          cam->setPaused(!cam->getPaused());
+
+          ss << "Pause: "
+            << (cam->getPaused() ? "Paused" : "Unpaused")
+            << " camera. id=" << id;
+          setMessage(ss.str());
+          break;
       }
   }
 }
@@ -202,6 +220,16 @@ void TwfApp::mouseReleased(int x, int y, int button) {
 void TwfApp::windowResized(int w, int h) {
 }
 
+Camera* TwfApp::getCameraById(int id) {
+  for (int i = 0; i < cameras.size(); i++) {
+    Camera* cam = cameras[i];
+    if (cam->getId() == id) {
+      return cam;
+    }
+  }
+  return NULL;
+}
+
 void TwfApp::updateCameras() {
   for (int i = 0; i < cameras.size(); i++) {
     Camera* cam = cameras[i];
@@ -225,7 +253,7 @@ void TwfApp::startExtentCalibration(int id) {
 
 void TwfApp::setMessage(string s) {
   if (message != s) {
-    cout << s;
+    cout << s << endl;
   }
   message = s;
 }

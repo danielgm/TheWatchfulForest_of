@@ -23,7 +23,9 @@ Camera::Camera(int _id, ServoCommand &_servoCommand) {
 
   isLaserOn = false;
   isPaused = false;
-  isStopped = false;
+
+  nullSignalDelay = 500;
+  nullSignalTime = ofGetSystemTime();
 
   position.set(0, 0, 0);
   direction.set(0, 0, 0);
@@ -46,10 +48,10 @@ void Camera::update() {
     servoCommand->setServo(id * 2 + 0, ofMap(getPan(), 0, 1, panMin, panMax));
     servoCommand->setServo(id * 2 + 1, ofMap(getTilt(), 0, 1, tiltMin, tiltMax));
   }
-  else if (!isStopped) {
-    isStopped = true;
+  else if (nullSignalTime != 0 && ofGetSystemTime() > nullSignalTime) {
     servoCommand->setServo(id * 2 + 0, 0);
     servoCommand->setServo(id * 2 + 1, 0);
+    nullSignalTime = 0;
   }
 }
 
@@ -104,8 +106,12 @@ void Camera::setPanAndTilt(float pan, float tilt) {
 
   animationStart = 0;
   animationDuration = 0;
-  oneLastFrame = true;
-  isStopped = false;
+  oneLastFrame = false;
+
+  nullSignalTime = ofGetSystemTime() + nullSignalDelay;
+
+  servoCommand->setServo(id * 2 + 0, ofMap(getPan(), 0, 1, panMin, panMax));
+  servoCommand->setServo(id * 2 + 1, ofMap(getTilt(), 0, 1, tiltMin, tiltMax));
 }
 
 void Camera::panAndTiltTo(float pan, float tilt) {
@@ -117,7 +123,10 @@ void Camera::setPanAndTiltHome() {
 }
 
 void Camera::panAndTiltTo(float pan, float tilt, int duration) {
-  cout << "Camera(" << id << ")" << "::panAndTiltTo(" << pan << ", " << tilt << ", " << duration << ")" << endl;
+  cout << "Camera(" << id << ")"
+    << "::panAndTiltTo(" << pan << ", " << tilt << ", " << duration << ")"
+    << ", current=" << getPan() << ", " << getTilt()
+    << endl;
   panStart = getPan();
   tiltStart = getTilt();
 
@@ -127,7 +136,8 @@ void Camera::panAndTiltTo(float pan, float tilt, int duration) {
   animationStart = ofGetSystemTime();
   animationDuration = duration;
   oneLastFrame = true;
-  isStopped = false;
+
+  nullSignalTime = animationStart + animationDuration + nullSignalDelay;
 }
 
 bool Camera::isAnimating() {
@@ -197,6 +207,11 @@ void Camera::readSettings(ofxXmlSettings &settings) {
   settings.getValue("direction:x", 0.0),
   settings.getValue("direction:y", 0.0),
   settings.getValue("direction:z", 0.0));
+
+  cout << "Loaded camera " << id
+    << ": pan=[" << panMin << "," << panMax
+    << "], tilt=[" << tiltMin << "," << tiltMax << "]"
+    << endl;
 }
 
 void Camera::pushSettings(ofxXmlSettings &settings) {
