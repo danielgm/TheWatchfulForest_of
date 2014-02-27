@@ -36,6 +36,7 @@ private:
 
   void startExtentCalibration(int id);
   void setMessage(string s);
+  void shutdown();
 
   enum Constants {
     INPUT_EXTENT_CALIBRATION = 0
@@ -55,4 +56,6 @@ private:
 
   int inputState;
   string message;
+
+  bool shuttingDown;
 };

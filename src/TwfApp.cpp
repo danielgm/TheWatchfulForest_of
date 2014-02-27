@@ -15,15 +15,28 @@ void TwfApp::setup() {
 
   loadSettings();
 
-  //extentCalibration.start(cam);
-  //cameraCalibration.start(cam);
+  shuttingDown = false;
 }
 
 void TwfApp::update() {
+  if (shuttingDown) {
+    for (vector<Camera*>::iterator i = cameras.begin(); i != cameras.end(); ++i) {
+      if (!(*i)->isAnimating()) {
+        delete *i;
+        cameras.erase(i, i + 1);
+        i--;
+      }
+    }
+
+    if (cameras.size() <= 0) {
+      ofExit();
+    }
+  }
   if (extentCalibration.isRunning()) {
     extentCalibration.update(
         ofClamp((float)mouseX / ofGetWindowWidth(), 0, 1),
         ofClamp((float)mouseY / ofGetWindowHeight(), 0, 1));
+    return;
   }
 
   if (cameraCalibration.isRunning()) {
@@ -35,6 +48,7 @@ void TwfApp::update() {
         cameraCalibration.recordPoint(p);
       }
     }
+    return;
   }
 
   for (int i = 0; i < cameras.size(); i++) {
@@ -69,6 +83,10 @@ void TwfApp::draw() {
 }
 
 void TwfApp::exit() {
+  for (int i = 0; i < cameras.size(); i++) {
+    Camera* cam = cameras[i];
+    delete cam;
+  }
 }
 
 void TwfApp::loadSettings() {
@@ -126,6 +144,10 @@ void TwfApp::saveSettings() {
 
 void TwfApp::keyPressed(int key) {
   switch (key) {
+    case 'x':
+      shutdown();
+      break;
+
     case 'l':
       loadSettings();
       break;
@@ -198,3 +220,11 @@ void TwfApp::setMessage(string s) {
   message = s;
 }
 
+void TwfApp::shutdown() {
+  // Get all the cameras to return home.
+  shuttingDown = true;
+  for (int i = 0; i < cameras.size(); i++) {
+    Camera* cam = cameras[i];
+    cam->panAndTiltTo(0.5, 0.5);
+  }
+}
