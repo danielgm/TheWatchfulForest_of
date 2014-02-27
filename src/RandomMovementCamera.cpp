@@ -8,7 +8,7 @@ RandomMovementCamera::RandomMovementCamera(int id, ServoCommand &servoCommand)
 }
 
 void RandomMovementCamera::update() {
-  if (!getPaused()) {
+  if (!getPaused() && !isShuttingDown()) {
     if (hasTarget && !isAnimating()) {
       sleep(1000 + floor(ofRandom(4000)));
       hasTarget = false;

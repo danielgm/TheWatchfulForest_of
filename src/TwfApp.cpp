@@ -22,6 +22,7 @@ void TwfApp::update() {
   if (shuttingDown) {
     for (vector<Camera*>::iterator i = cameras.begin(); i != cameras.end(); ++i) {
       if (!(*i)->isAnimating()) {
+        (*i)->sendNullSignal();
         delete *i;
         cameras.erase(i, i + 1);
         i--;
@@ -263,7 +264,7 @@ void TwfApp::shutdown() {
   shuttingDown = true;
   for (int i = 0; i < cameras.size(); i++) {
     Camera* cam = cameras[i];
-    cam->panAndTiltTo(0.5, 0.5);
+    cam->shutdown();
   }
 
   setMessage("Quitting...");

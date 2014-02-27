@@ -25,10 +25,12 @@ Camera::Camera(int _id, ServoCommand &_servoCommand) {
   isPaused = false;
 
   nullSignalDelay = 500;
-  nullSignalTime = ofGetSystemTime();
+  nullSignalTime = 0;
 
   position.set(0, 0, 0);
   direction.set(0, 0, 0);
+
+  shuttingDown = false;
 }
 
 int Camera::getId() {
@@ -49,9 +51,7 @@ void Camera::update() {
     servoCommand->setServo(id * 2 + 1, ofMap(getTilt(), 0, 1, tiltMin, tiltMax));
   }
   else if (nullSignalTime != 0 && ofGetSystemTime() > nullSignalTime) {
-    servoCommand->setServo(id * 2 + 0, 0);
-    servoCommand->setServo(id * 2 + 1, 0);
-    nullSignalTime = 0;
+    sendNullSignal();
   }
 }
 
@@ -229,6 +229,21 @@ void Camera::pushSettings(ofxXmlSettings &settings) {
   settings.setValue("direction:x", direction[0]);
   settings.setValue("direction:y", direction[1]);
   settings.setValue("direction:z", direction[2]);
+}
+
+void Camera::sendNullSignal() {
+  servoCommand->setServo(id * 2 + 0, 0);
+  servoCommand->setServo(id * 2 + 1, 0);
+  nullSignalTime = 0;
+}
+
+bool Camera::isShuttingDown() {
+  return shuttingDown;
+}
+
+void Camera::shutdown() {
+  shuttingDown = true;
+  panAndTiltTo(0.5, 0.5);
 }
 
 int Camera::calculateDuration(float p0, float t0, float p1, float t1) {

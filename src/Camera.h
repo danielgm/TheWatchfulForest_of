@@ -33,7 +33,7 @@ class Camera {
     bool getLaser();
     void setLaser(bool on);
 
-    bool getPaused();
+    virtual bool getPaused();
     virtual void setPaused(bool paused);
 
     ofVec3f getPosition();
@@ -43,6 +43,12 @@ class Camera {
 
     virtual void readSettings(ofxXmlSettings &settings);
     virtual void pushSettings(ofxXmlSettings &settings);
+
+    // Sends a null signal to the camera servos.
+    void sendNullSignal();
+
+    virtual bool isShuttingDown();
+    virtual void shutdown();
 
   private:
 
@@ -83,4 +89,6 @@ class Camera {
 
     ofVec3f position;
     ofVec3f direction;
+
+    bool shuttingDown;
 };
