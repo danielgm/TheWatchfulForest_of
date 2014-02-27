@@ -175,12 +175,18 @@ void TwfApp::keyPressed(int key) {
           break;
 
         case INPUT_PAUSE:
-          cam->setPaused(!cam->getPaused());
+          if (cam != NULL) {
+            cam->setPaused(!cam->getPaused());
 
-          ss << "Pause: "
-            << (cam->getPaused() ? "Paused" : "Unpaused")
-            << " camera. id=" << id;
-          setMessage(ss.str());
+            ss << "Pause: "
+              << (cam->getPaused() ? "Paused" : "Unpaused")
+              << " camera. id=" << id;
+            setMessage(ss.str());
+          }
+          else {
+            ss << "Pause: camera not found. id=" << id;
+            setMessage(ss.str());
+          }
           break;
       }
   }
