@@ -6,7 +6,7 @@ using namespace cv;
 void TwfApp::setup() {
   //ofSetLogLevel(OF_LOG_VERBOSE);
 
-  ofSetFrameRate(60);
+  ofSetFrameRate(20);
 
   serial.listDevices();
   serial.setup(0, 9600);
@@ -31,7 +31,9 @@ void TwfApp::update() {
     if (cameras.size() <= 0) {
       ofExit();
     }
+    return;
   }
+
   if (extentCalibration.isRunning()) {
     extentCalibration.update(
         ofClamp((float)mouseX / ofGetWindowWidth(), 0, 1),
@@ -51,11 +53,7 @@ void TwfApp::update() {
     return;
   }
 
-  for (int i = 0; i < cameras.size(); i++) {
-    Camera* cam = cameras[i];
-    cam->update();
-    //cam.setTargets(targets);
-  }
+  updateCameras();
 
   while (serial.available()) {
     cout << (char)serial.readByte();
@@ -197,6 +195,13 @@ void TwfApp::mouseReleased(int x, int y, int button) {
 }
 
 void TwfApp::windowResized(int w, int h) {
+}
+
+void TwfApp::updateCameras() {
+  for (int i = 0; i < cameras.size(); i++) {
+    Camera* cam = cameras[i];
+    cam->update();
+  }
 }
 
 void TwfApp::startExtentCalibration(int id) {

@@ -34,6 +34,7 @@ public:
 
 private:
 
+  void updateCameras();
   void startExtentCalibration(int id);
   void setMessage(string s);
   void shutdown();
