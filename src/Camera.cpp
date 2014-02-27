@@ -4,6 +4,8 @@ Camera::Camera(int _id, ServoCommand &_servoCommand) {
   id = _id;
   servoCommand = &_servoCommand;
 
+  laserPin = 0;
+
   panMin = 0;
   panMax = 0;
   tiltMin = 0;
@@ -30,9 +32,16 @@ int Camera::getId() {
   return id;
 }
 
+int Camera::getLaserPin() {
+  return laserPin;
+}
+
+void Camera::setLaserPin(int v) {
+  laserPin = v;
+}
+
 void Camera::update() {
   if (isAnimating()) {
-    cout << "\t" << id << "\t" << floor(getPan() * 100) << ", " << floor(getTilt() * 100) << endl;
     servoCommand->setServo(id * 2 + 0, ofMap(getPan(), 0, 1, panMin, panMax));
     servoCommand->setServo(id * 2 + 1, ofMap(getTilt(), 0, 1, tiltMin, tiltMax));
   }
@@ -134,6 +143,7 @@ bool Camera::getLaser() {
 
 void Camera::setLaser(bool on) {
   isLaserOn = on;
+  servoCommand->setDigital(laserPin, on);
 }
 
 bool Camera::getPaused() {
@@ -168,6 +178,9 @@ void Camera::setDirection(ofVec3f v) {
 }
 
 void Camera::readSettings(ofxXmlSettings &settings) {
+  id = settings.getValue("id", 0);
+  laserPin = settings.getValue("laserPin", 0);
+
   panMin = settings.getValue("panMin", 0);
   panMax = settings.getValue("panMax", 0);
   tiltMin = settings.getValue("tiltMin", 0);
@@ -184,6 +197,8 @@ void Camera::readSettings(ofxXmlSettings &settings) {
 
 void Camera::pushSettings(ofxXmlSettings &settings) {
   settings.setValue("id", id);
+  settings.setValue("laserPin", laserPin);
+
   settings.setValue("tiltMin", (int) tiltMin);
   settings.setValue("tiltMax", (int) tiltMax);
   settings.setValue("panMin", (int) panMin);

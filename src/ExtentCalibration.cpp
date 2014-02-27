@@ -12,6 +12,7 @@ void ExtentCalibration::start(Camera &_camera) {
 
 void ExtentCalibration::update(float x, float y) {
   camera->setPanAndTilt(x, y);
+  camera->update();
 }
 
 void ExtentCalibration::recordPoint(float x, float y) {

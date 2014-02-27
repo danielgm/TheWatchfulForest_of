@@ -3,6 +3,7 @@
 RandomMovementCamera::RandomMovementCamera(int id, ServoCommand &servoCommand)
     : Camera(id, servoCommand) {
   wakeTime = ofGetSystemTime();
+  laserToggleTime = ofGetSystemTime();
   hasTarget = false;
 }
 
@@ -17,6 +18,12 @@ void RandomMovementCamera::update() {
       hasTarget = true;
     }
   }
+
+  if (ofGetSystemTime() > laserToggleTime) {
+    setLaser(!getLaser());
+    laserToggleTime = ofGetSystemTime() + (int)(3000 + floor(ofRandom(7000)));
+  }
+
   Camera::update();
 }
 

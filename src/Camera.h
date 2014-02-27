@@ -14,6 +14,9 @@ class Camera {
 
     int getId();
 
+    int getLaserPin();
+    void setLaserPin(int v);
+
     void setPanExtent(int min, int max);
     void setTiltExtent(int min, int max);
 
@@ -52,6 +55,10 @@ class Camera {
     ServoCommand* servoCommand;
 
     int id;
+
+    // NOTE: Don't use pins 0 and 1 for the laser. They're used
+    // by the Adafruit 16-channel PWM shield.
+    int laserPin;
 
     float panMin;
     float panMax;

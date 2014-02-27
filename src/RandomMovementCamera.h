@@ -19,5 +19,6 @@ class RandomMovementCamera : public Camera {
     bool isSleeping();
 
     unsigned long long wakeTime;
+    unsigned long long laserToggleTime;
     bool hasTarget;
 };
