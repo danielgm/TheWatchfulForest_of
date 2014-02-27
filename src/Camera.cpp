@@ -23,6 +23,7 @@ Camera::Camera(int _id, ServoCommand &_servoCommand) {
 
   isLaserOn = false;
   isPaused = false;
+  isStopped = false;
 
   position.set(0, 0, 0);
   direction.set(0, 0, 0);
@@ -45,7 +46,8 @@ void Camera::update() {
     servoCommand->setServo(id * 2 + 0, ofMap(getPan(), 0, 1, panMin, panMax));
     servoCommand->setServo(id * 2 + 1, ofMap(getTilt(), 0, 1, tiltMin, tiltMax));
   }
-  else {
+  else if (!isStopped) {
+    isStopped = true;
     servoCommand->setServo(id * 2 + 0, 0);
     servoCommand->setServo(id * 2 + 1, 0);
   }
@@ -103,6 +105,7 @@ void Camera::setPanAndTilt(float pan, float tilt) {
   animationStart = 0;
   animationDuration = 0;
   oneLastFrame = true;
+  isStopped = false;
 }
 
 void Camera::panAndTiltTo(float pan, float tilt) {
@@ -124,6 +127,7 @@ void Camera::panAndTiltTo(float pan, float tilt, int duration) {
   animationStart = ofGetSystemTime();
   animationDuration = duration;
   oneLastFrame = true;
+  isStopped = false;
 }
 
 bool Camera::isAnimating() {

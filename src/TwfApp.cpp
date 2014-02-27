@@ -6,10 +6,10 @@ using namespace cv;
 void TwfApp::setup() {
   //ofSetLogLevel(OF_LOG_VERBOSE);
 
-  ofSetFrameRate(20);
+  ofSetFrameRate(60);
 
   serial.listDevices();
-  serial.setup(0, 9600);
+  serial.setup(0, 38400);
 
   servoCommand.setSerial(serial);
 
@@ -31,13 +31,12 @@ void TwfApp::update() {
     if (cameras.size() <= 0) {
       ofExit();
     }
+
+	updateCameras();
     return;
   }
 
   if (extentCalibration.isRunning()) {
-    extentCalibration.update(
-        ofClamp((float)mouseX / ofGetWindowWidth(), 0, 1),
-        ofClamp((float)mouseY / ofGetWindowHeight(), 0, 1));
     return;
   }
 
@@ -106,6 +105,7 @@ void TwfApp::loadSettings() {
     Camera* cam = new RandomMovementCamera(
         settings.getValue("id", 0), servoCommand);
     cam->readSettings(settings);
+    cam->setPanAndTiltHome();
 
     cameras.push_back(cam);
 
@@ -168,6 +168,11 @@ void TwfApp::keyPressed(int key) {
 }
 
 void TwfApp::mouseMoved(int x, int y) {
+  if (extentCalibration.isRunning()) {
+    extentCalibration.update(
+        ofClamp((float)mouseX / ofGetWindowWidth(), 0, 1),
+        ofClamp((float)mouseY / ofGetWindowHeight(), 0, 1));
+  }
 }
 
 void TwfApp::mouseDragged(int x, int y, int button) {
@@ -232,4 +237,6 @@ void TwfApp::shutdown() {
     Camera* cam = cameras[i];
     cam->panAndTiltTo(0.5, 0.5);
   }
+
+  setMessage("Quitting...");
 }

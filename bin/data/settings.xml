@@ -4,10 +4,10 @@
         <camera>
             <id>0</id>
             <laserPin>4</laserPin>
-            <tiltMin>233</tiltMin>
-            <tiltMax>664</tiltMax>
-            <panMin>217</panMin>
-            <panMax>611</panMax>
+            <tiltMin>350</tiltMin>
+            <tiltMax>460</tiltMax>
+            <panMin>235</panMin>
+            <panMax>632</panMax>
             <position>
                 <x>0.000000000</x>
                 <y>0.000000000</y>
@@ -21,11 +21,11 @@
         </camera>
         <camera>
             <id>1</id>
-            <laserPin>5</laserPin>
-            <tiltMin>342</tiltMin>
-            <tiltMax>459</tiltMax>
-            <panMin>395</panMin>
-            <panMax>611</panMax>
+            <laserPin>8</laserPin>
+            <tiltMin>402</tiltMin>
+            <tiltMax>496</tiltMax>
+            <panMin>199</panMin>
+            <panMax>670</panMax>
             <position>
                 <x>0.000000000</x>
                 <y>0.000000000</y>

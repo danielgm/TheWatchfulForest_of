@@ -77,6 +77,7 @@ class Camera {
 
     bool isLaserOn;
     bool isPaused;
+    bool isStopped;
 
     ofVec3f position;
     ofVec3f direction;
