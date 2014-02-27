@@ -202,9 +202,7 @@ int Camera::calculateDuration(float p0, float t0, float p1, float t1) {
     float dTilt = t1 - t0;
     float delta = sqrt(dPan * dPan + dTilt * dTilt);
 
-    float rPan = panMax - panMin;
-    float rTilt = tiltMax - tiltMin;
-    float rDelta = sqrt(rPan * rPan + rTilt * rTilt);
+    float rDelta = sqrt(2);
 
     return floor(ofMap(delta / rDelta, 0, 1, 2000, 4000));
 }
