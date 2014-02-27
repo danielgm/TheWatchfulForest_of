@@ -89,20 +89,7 @@ void TwfApp::loadSettings() {
 
     Camera* cam = new Camera(
         settings.getValue("id", 0), servoCommand);
-    cam->setPanExtent(
-        settings.getValue("panMin", 0),
-        settings.getValue("panMax", 0));
-    cam->setTiltExtent(
-        settings.getValue("tiltMin", 0),
-        settings.getValue("tiltMax", 0));
-    cam->setPosition(ofVec3f(
-        settings.getValue("position:x", 0.0),
-        settings.getValue("position:y", 0.0),
-        settings.getValue("position:z", 0.0)));
-    cam->setDirection(ofVec3f(
-        settings.getValue("direction:x", 0.0),
-        settings.getValue("direction:y", 0.0),
-        settings.getValue("direction:z", 0.0)));
+    cam->readSettings(settings);
 
     cameras.push_back(cam);
 
@@ -122,7 +109,12 @@ void TwfApp::saveSettings() {
 
   for (int i = 0; i < cameras.size(); i++) {
     Camera* cam = cameras[i];
-    cam->pushSettings(settings, i);
+    settings.addTag("camera");
+    settings.pushTag("camera", i);
+
+    cam->pushSettings(settings);
+
+    settings.popTag();
   }
 
   settings.popTag();

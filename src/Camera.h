@@ -38,7 +38,8 @@ class Camera {
     ofVec3f getDirection();
     void setDirection(ofVec3f v);
 
-    void pushSettings(ofxXmlSettings &settings, int index);
+    void readSettings(ofxXmlSettings &settings);
+    void pushSettings(ofxXmlSettings &settings);
 
   private:
 

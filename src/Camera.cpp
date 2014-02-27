@@ -163,10 +163,22 @@ void Camera::setDirection(ofVec3f v) {
   direction = v;
 }
 
-void Camera::pushSettings(ofxXmlSettings &settings, int index) {
-  settings.addTag("camera");
-  settings.pushTag("camera", index);
+void Camera::readSettings(ofxXmlSettings &settings) {
+  panMin = settings.getValue("panMin", 0);
+  panMax = settings.getValue("panMax", 0);
+  tiltMin = settings.getValue("tiltMin", 0);
+  tiltMax = settings.getValue("tiltMax", 0);
+  position = ofVec3f(
+    settings.getValue("position:x", 0.0),
+    settings.getValue("position:y", 0.0),
+    settings.getValue("position:z", 0.0));
+  direction = ofVec3f(
+  settings.getValue("direction:x", 0.0),
+  settings.getValue("direction:y", 0.0),
+  settings.getValue("direction:z", 0.0));
+}
 
+void Camera::pushSettings(ofxXmlSettings &settings) {
   settings.setValue("id", id);
   settings.setValue("tiltMin", (int) tiltMin);
   settings.setValue("tiltMax", (int) tiltMax);
@@ -179,8 +191,6 @@ void Camera::pushSettings(ofxXmlSettings &settings, int index) {
   settings.setValue("direction:x", direction[0]);
   settings.setValue("direction:y", direction[1]);
   settings.setValue("direction:z", direction[2]);
-
-  settings.popTag();
 }
 
 int Camera::calculateDuration(float p0, float t0, float p1, float t1) {
