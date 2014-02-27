@@ -27,7 +27,7 @@ void TwfApp::setup() {
   cam->setPanAndTiltHome();
   cameras.push_back(cam);
 
-  pointFont.loadFont("arial.ttf", 12);
+  loadSettings();
 
   //extentCalibration.start(cam);
   //cameraCalibration.start(cam);
@@ -76,14 +76,33 @@ void TwfApp::draw() {
 
   ofSetColor(255, 255, 255);
   stringstream reportStream;
-  reportStream << "";
-  ofDrawBitmapString(reportStream.str(), 20, 500);
+  reportStream << "Some information.";
+  pointFont.drawString(reportStream.str(), 20, 500);
 }
 
 void TwfApp::exit() {
 }
 
+void TwfApp::loadSettings() {
+  settings.loadFile("settings.xml");
+  pointFont.loadFont("arial.ttf", settings.getValue("settings:fontSize", 0));
+}
+
+void TwfApp::saveSettings() {
+
+  settings.saveFile("settings.xml");
+}
+
 void TwfApp::keyPressed(int key) {
+  switch (key) {
+    case 'l':
+      loadSettings();
+      break;
+
+    case 's':
+      saveSettings();
+      break;
+  }
 }
 
 void TwfApp::mouseMoved(int x, int y) {

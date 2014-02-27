@@ -2,6 +2,7 @@
 
 #include "ofMain.h"
 #include "ofxKinect.h"
+#include "ofxXmlSettings.h"
 
 #include "Camera.h"
 #include "CameraCalibration.h"
@@ -21,6 +22,9 @@ public:
   void draw();
   void exit();
 
+  void loadSettings();
+  void saveSettings();
+
   void keyPressed(int key);
   void mouseMoved(int w, int h);
   void mouseDragged(int x, int y, int button);
@@ -29,6 +33,8 @@ public:
   void windowResized(int w, int h);
 
 private:
+
+  ofxXmlSettings settings;
 
   ofSerial serial;
   ServoCommand servoCommand;
