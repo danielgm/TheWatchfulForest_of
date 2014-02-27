@@ -65,19 +65,21 @@ void TwfApp::update() {
 void TwfApp::draw() {
   ofBackground(100, 100, 100);
 
-  if (extentCalibration.isRunning() || extentCalibration.isComplete()) {
-    ofDrawBitmapString(extentCalibration.getMessage(), 20, 500);
+  if (extentCalibration.isRunning()
+      || extentCalibration.isComplete()) {
+    setMessage(extentCalibration.getMessage());
   }
 
   if (cameraCalibration.isRunning()
       || cameraCalibration.isComplete()) {
-    ofDrawBitmapString(cameraCalibration.getMessage(), 20, 500);
+    setMessage(cameraCalibration.getMessage());
   }
 
   ofSetColor(255, 255, 255);
   stringstream reportStream;
   reportStream << "Some information.";
-  pointFont.drawString(reportStream.str(), 20, 500);
+  pointFont.drawString(reportStream.str(), 20, 20);
+  pointFont.drawString(message, 20, 40);
 }
 
 void TwfApp::exit() {
@@ -112,6 +114,17 @@ void TwfApp::keyPressed(int key) {
     case 's':
       saveSettings();
       break;
+
+    case 'e':
+      inputState = INPUT_EXTENT_CALIBRATION;
+      setMessage("Extents calibration: input a digit for the camera ID.");
+      break;
+
+    case '0'...'9':
+      if (inputState == INPUT_EXTENT_CALIBRATION) {
+        int id = key - '0';
+        startExtentCalibration(id);
+      }
   }
 }
 
@@ -143,5 +156,26 @@ void TwfApp::mouseReleased(int x, int y, int button) {
 }
 
 void TwfApp::windowResized(int w, int h) {
+}
+
+void TwfApp::startExtentCalibration(int id) {
+  for (int i = 0; i < cameras.size(); i++) {
+    Camera* cam = cameras[i];
+    if (cam->getId() == id) {
+      extentCalibration.start(*cam);
+      return;
+    }
+  }
+
+  stringstream ss;
+  ss << "Camera not found. id=" << id << ", cameras.size=" << cameras.size() << endl;
+  setMessage(ss.str());
+}
+
+void TwfApp::setMessage(string s) {
+  if (message != s) {
+    cout << s;
+  }
+  message = s;
 }
 

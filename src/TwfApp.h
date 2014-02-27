@@ -34,6 +34,14 @@ public:
 
 private:
 
+  void pauseAll();
+  void startExtentCalibration(int id);
+  void setMessage(string s);
+
+  enum Constants {
+    INPUT_EXTENT_CALIBRATION = 0
+  };
+
   ofxXmlSettings settings;
 
   ofSerial serial;
@@ -45,4 +53,7 @@ private:
   KinectMarkerTracker kinectMarkerTracker;
 
   ofTrueTypeFont pointFont;
+
+  int inputState;
+  string message;
 };

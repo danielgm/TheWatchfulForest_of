@@ -20,6 +20,7 @@ Camera::Camera(int _id, ServoCommand &_servoCommand) {
   oneLastFrame = false;
 
   isLaserOn = false;
+  isPaused = false;
 
   position.set(0, 0, 0);
   direction.set(0, 0, 0);
@@ -129,6 +130,23 @@ bool Camera::getLaser() {
 
 void Camera::setLaser(bool on) {
   isLaserOn = on;
+}
+
+bool Camera::getPaused() {
+  return isPaused;
+}
+
+void Camera::setPaused(bool v) {
+  isPaused = v;
+
+  if (v) {
+    panStart = panTarget = getPan();
+    tiltStart = tiltTarget = getTilt();
+
+    animationStart = 0;
+    animationDuration = 0;
+    oneLastFrame = false;
+  }
 }
 
 ofVec3f Camera::getPosition() {

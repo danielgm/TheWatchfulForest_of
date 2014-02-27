@@ -11,6 +11,8 @@ class RandomMovementCamera : public Camera {
 
     void update();
 
+    void setPaused(bool v);
+
   private:
 
     void sleep(int ms);

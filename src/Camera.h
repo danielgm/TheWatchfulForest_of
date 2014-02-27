@@ -30,6 +30,9 @@ class Camera {
     bool getLaser();
     void setLaser(bool on);
 
+    bool getPaused();
+    virtual void setPaused(bool paused);
+
     ofVec3f getPosition();
     void setPosition(ofVec3f v);
     ofVec3f getDirection();
@@ -65,6 +68,7 @@ class Camera {
     bool oneLastFrame;
 
     bool isLaserOn;
+    bool isPaused;
 
     ofVec3f position;
     ofVec3f direction;
