@@ -65,6 +65,7 @@ void ExtentCalibration::setStep(int s) {
       break;
 
     case STEP_PAN_LEFT:
+      camera->setPaused(true);
       camera->setPanExtent(BASE_EXTENT_MIN, BASE_EXTENT_MAX);
       camera->setTiltExtent(BASE_EXTENT_MIN, BASE_EXTENT_MAX);
       message = "Pan left.";
@@ -83,6 +84,7 @@ void ExtentCalibration::setStep(int s) {
       break;
 
     case STEP_COMPLETE:
+      camera->setPaused(false);
       camera->setPanExtent(
           MIN(panLeft, panRight),
           MAX(panLeft, panRight));
