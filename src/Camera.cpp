@@ -89,7 +89,7 @@ void Camera::setPanAndTilt(float pan, float tilt) {
 
   animationStart = 0;
   animationDuration = 0;
-  oneLastFrame = false;
+  oneLastFrame = true;
 }
 
 void Camera::panAndTiltTo(float pan, float tilt) {
