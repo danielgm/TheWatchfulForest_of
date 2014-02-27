@@ -2,28 +2,11 @@
     <fontSize>12</fontSize>
     <cameras>
         <camera>
-            <id>42</id>
-            <tiltMin>200</tiltMin>
-            <tiltMax>700</tiltMax>
-            <panMin>200</panMin>
-            <panMax>700</panMax>
-            <position>
-                <x>0.000000000</x>
-                <y>0.000000000</y>
-                <z>0.000000000</z>
-            </position>
-            <direction>
-                <x>0.000000000</x>
-                <y>0.000000000</y>
-                <z>0.000000000</z>
-            </direction>
-        </camera>
-        <camera>
-            <id>0</id>
-            <tiltMin>200</tiltMin>
-            <tiltMax>700</tiltMax>
-            <panMin>200</panMin>
-            <panMax>700</panMax>
+            <id>1</id>
+            <tiltMin>342</tiltMin>
+            <tiltMax>459</tiltMax>
+            <panMin>395</panMin>
+            <panMax>611</panMax>
             <position>
                 <x>0.000000000</x>
                 <y>0.000000000</y>

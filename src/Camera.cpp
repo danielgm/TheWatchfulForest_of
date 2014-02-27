@@ -36,6 +36,10 @@ void Camera::update() {
     servoCommand->setServo(id * 2 + 0, ofMap(getPan(), 0, 1, panMin, panMax));
     servoCommand->setServo(id * 2 + 1, ofMap(getTilt(), 0, 1, tiltMin, tiltMax));
   }
+  else {
+    servoCommand->setServo(id * 2 + 0, 0);
+    servoCommand->setServo(id * 2 + 1, 0);
+  }
 }
 
 void Camera::setPanExtent(int min, int max) {
@@ -202,7 +206,7 @@ int Camera::calculateDuration(float p0, float t0, float p1, float t1) {
     float rTilt = tiltMax - tiltMin;
     float rDelta = sqrt(rPan * rPan + rTilt * rTilt);
 
-    return floor(ofMap(delta / rDelta, 0, 1, 1000, 3500));
+    return floor(ofMap(delta / rDelta, 0, 1, 2000, 4000));
 }
 
 /**

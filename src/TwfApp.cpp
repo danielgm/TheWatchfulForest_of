@@ -87,7 +87,7 @@ void TwfApp::loadSettings() {
   for (int i = 0; i < numCameras; i++) {
     settings.pushTag("camera", i);
 
-    Camera* cam = new Camera(
+    Camera* cam = new RandomMovementCamera(
         settings.getValue("id", 0), servoCommand);
     cam->readSettings(settings);
 
