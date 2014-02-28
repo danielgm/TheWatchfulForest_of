@@ -19,10 +19,11 @@ void RandomMovementCamera::update() {
     }
   }
 
-  if (ofGetSystemTime() > laserToggleTime) {
-    setLaser(!getLaser());
-    laserToggleTime = ofGetSystemTime() + (int)(3000 + floor(ofRandom(7000)));
-  }
+  // Leave laser off while setting up. Nobody needs to know about this yet. (-:
+  //if (ofGetSystemTime() > laserToggleTime) {
+    //setLaser(!getLaser());
+    //laserToggleTime = ofGetSystemTime() + 1000; //(int)(3000 + floor(ofRandom(7000)));
+  //}
 
   Camera::update();
 }
