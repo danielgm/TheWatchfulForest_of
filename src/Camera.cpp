@@ -157,7 +157,10 @@ bool Camera::getLaser() {
 
 void Camera::setLaser(bool on) {
   isLaserOn = on;
-  servoCommand->setDigital(laserPin, on);
+
+  if (laserPin >= 0) {
+    servoCommand->setDigital(laserPin, on);
+  }
 }
 
 bool Camera::getPaused() {
