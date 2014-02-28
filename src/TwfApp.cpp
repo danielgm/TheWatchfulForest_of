@@ -165,6 +165,11 @@ void TwfApp::keyPressed(int key) {
       setMessage("Pause: input a digit for the camera ID.");
       break;
 
+    case 'z':
+      inputState = INPUT_LASER;
+        setMessage("Toggle laser: input a digit for the camera ID.");
+      break;
+
     case '0'...'9':
       id = key - '0';
       cam = getCameraById(id);
@@ -188,7 +193,19 @@ void TwfApp::keyPressed(int key) {
             setMessage(ss.str());
           }
           break;
+
+        case INPUT_LASER:
+          if (cam != NULL) {
+            cam->setAllowLaser(!cam->getAllowLaser());
+
+            ss << "Laser: "
+              << (cam->getAllowLaser() ? "Enabled" : "Disabled")
+              << ". id=" << id;
+            setMessage(ss.str());
+          }
       }
+
+      inputState = INPUT_NONE;
   }
 }
 

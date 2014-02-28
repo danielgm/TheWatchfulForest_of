@@ -33,6 +33,9 @@ class Camera {
     bool getLaser();
     void setLaser(bool on);
 
+    bool getAllowLaser();
+    void setAllowLaser(bool v);
+
     virtual bool getPaused();
     virtual void setPaused(bool paused);
 
@@ -82,6 +85,7 @@ class Camera {
     bool oneLastFrame;
 
     bool isLaserOn;
+    bool allowLaser;
     bool isPaused;
 
     int nullSignalDelay;

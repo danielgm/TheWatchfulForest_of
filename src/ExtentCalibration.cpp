@@ -92,6 +92,8 @@ void ExtentCalibration::setStep(int s) {
       camera->setTiltExtent(
           MIN(tiltDown, tiltUp),
           MAX(tiltDown, tiltUp));
+      camera->setPanAndTilt(0.5, 0.5);
+      camera->panAndTiltTo(0.5, 0.5);
 
       ss << "Extent calibration complete. pan=["
         << MIN(panLeft, panRight) << ", "

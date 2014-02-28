@@ -22,9 +22,10 @@ Camera::Camera(int _id, ServoCommand &_servoCommand) {
   oneLastFrame = false;
 
   isLaserOn = false;
+  allowLaser = false;
   isPaused = false;
 
-  nullSignalDelay = 500;
+  nullSignalDelay = 300;
   nullSignalTime = 0;
 
   position.set(0, 0, 0);
@@ -161,6 +162,14 @@ void Camera::setLaser(bool on) {
   if (laserPin >= 0) {
     servoCommand->setDigital(laserPin, on);
   }
+}
+
+bool Camera::getAllowLaser() {
+  return allowLaser;
+}
+
+void Camera::setAllowLaser(bool v) {
+  allowLaser = v;
 }
 
 bool Camera::getPaused() {

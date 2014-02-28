@@ -41,8 +41,10 @@ private:
   void shutdown();
 
   enum Constants {
+    INPUT_NONE = -1,
     INPUT_EXTENT_CALIBRATION = 0,
-    INPUT_PAUSE = 1
+    INPUT_PAUSE = 1,
+    INPUT_LASER = 2
   };
 
   ofxXmlSettings settings;
