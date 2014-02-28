@@ -3,11 +3,11 @@
     <cameras>
         <camera>
             <id>0</id>
-            <laserPin>4</laserPin>
-            <tiltMin>364</tiltMin>
-            <tiltMax>462</tiltMax>
-            <panMin>199</panMin>
-            <panMax>621</panMax>
+            <laserPin>-1</laserPin>
+            <tiltMin>378</tiltMin>
+            <tiltMax>530</tiltMax>
+            <panMin>233</panMin>
+            <panMax>596</panMax>
             <position>
                 <x>0.000000000</x>
                 <y>0.000000000</y>
@@ -21,11 +21,29 @@
         </camera>
         <camera>
             <id>1</id>
+            <laserPin>4</laserPin>
+            <tiltMin>371</tiltMin>
+            <tiltMax>426</tiltMax>
+            <panMin>277</panMin>
+            <panMax>642</panMax>
+            <position>
+                <x>0.000000000</x>
+                <y>0.000000000</y>
+                <z>0.000000000</z>
+            </position>
+            <direction>
+                <x>0.000000000</x>
+                <y>0.000000000</y>
+                <z>0.000000000</z>
+            </direction>
+        </camera>
+        <camera>
+            <id>2</id>
             <laserPin>5</laserPin>
-            <tiltMin>213</tiltMin>
-            <tiltMax>342</tiltMax>
-            <panMin>380</panMin>
-            <panMax>659</panMax>
+            <tiltMin>215</tiltMin>
+            <tiltMax>360</tiltMax>
+            <panMin>202</panMin>
+            <panMax>622</panMax>
             <position>
                 <x>0.000000000</x>
                 <y>0.000000000</y>
@@ -39,11 +57,65 @@
         </camera>
         <camera>
             <id>3</id>
+            <laserPin>6</laserPin>
+            <tiltMin>295</tiltMin>
+            <tiltMax>418</tiltMax>
+            <panMin>266</panMin>
+            <panMax>656</panMax>
+            <position>
+                <x>0.000000000</x>
+                <y>0.000000000</y>
+                <z>0.000000000</z>
+            </position>
+            <direction>
+                <x>0.000000000</x>
+                <y>0.000000000</y>
+                <z>0.000000000</z>
+            </direction>
+        </camera>
+        <camera>
+            <id>4</id>
             <laserPin>7</laserPin>
-            <tiltMin>356</tiltMin>
-            <tiltMax>459</tiltMax>
-            <panMin>344</panMin>
-            <panMax>672</panMax>
+            <tiltMin>446</tiltMin>
+            <tiltMax>571</tiltMax>
+            <panMin>203</panMin>
+            <panMax>636</panMax>
+            <position>
+                <x>0.000000000</x>
+                <y>0.000000000</y>
+                <z>0.000000000</z>
+            </position>
+            <direction>
+                <x>0.000000000</x>
+                <y>0.000000000</y>
+                <z>0.000000000</z>
+            </direction>
+        </camera>
+        <camera>
+            <id>5</id>
+            <laserPin>8</laserPin>
+            <tiltMin>300</tiltMin>
+            <tiltMax>493</tiltMax>
+            <panMin>393</panMin>
+            <panMax>641</panMax>
+            <position>
+                <x>0.000000000</x>
+                <y>0.000000000</y>
+                <z>0.000000000</z>
+            </position>
+            <direction>
+                <x>0.000000000</x>
+                <y>0.000000000</y>
+                <z>0.000000000</z>
+            </direction>
+        </camera>
+        <camera>
+            <id>6</id>
+            <laserPin>9</laserPin>
+            <tiltMin>363</tiltMin>
+            <tiltMax>453</tiltMax>
+            <panMin>332</panMin>
+            <panMax>648</panMax>
             <position>
                 <x>0.000000000</x>
                 <y>0.000000000</y>
